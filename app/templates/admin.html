@@ -58,12 +58,13 @@
         </tbody>
     </table>
 
-    <!-- Pagination Controls -->
-    <div class="row">
-        <ul class="pagination">
+    <!-- Pagination Controls with Limit -->
+    <div class="row" style="display: flex; align-items: center; justify-content: center; position: relative;">
+
+        <ul class="pagination" style="margin: 0;">
             {% if pagination.has_prev %}
             <li class="waves-effect">
-                <a href="{{ url_for('admin_page') }}?page={{ pagination.prev_num }}">
+                <a href="/admin?page={{ pagination.prev_num }}&limit={{ pagination.limit }}">
                     <i class="material-icons">chevron_left</i>
                 </a>
             </li>
@@ -79,7 +80,7 @@
                     <li class="active blue"><a href="#!">{{ page_num }}</a></li>
                     {% else %}
                     <li class="waves-effect">
-                        <a href="{{ url_for('admin_page') }}?page={{ page_num }}">{{ page_num }}</a>
+                        <a href="/admin?page={{ page_num }}&limit={{ pagination.limit }}">{{ page_num }}</a>
                     </li>
                     {% endif %}
                 {% else %}
@@ -89,7 +90,7 @@
 
             {% if pagination.has_next %}
             <li class="waves-effect">
-                <a href="{{ url_for('admin_page') }}?page={{ pagination.next_num }}">
+                <a href="/admin?page={{ pagination.next_num }}&limit={{ pagination.limit }}">
                     <i class="material-icons">chevron_right</i>
                 </a>
             </li>
@@ -99,6 +100,16 @@
             </li>
             {% endif %}
         </ul>
+
+        <div class="input-field" style="position: absolute; right: 25px; margin: 0; ">
+            <select id="limit-select" onchange="location = this.value;">
+                {% for n in [10, 25, 50, 100] %}
+                <option value="/admin?page=1&limit={{ n }}" {% if pagination.limit == n %}selected{% endif %}>
+                    {{ n }} rows
+                </option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
     
     <!-- Optional: Show current page info -->
