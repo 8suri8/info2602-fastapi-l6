@@ -42,6 +42,30 @@ async function displayTodos(data){
 
 async function loadView(){
   let todos = await sendRequest(`${server}/todo`, 'GET');
+
+
+  async function toggleDone(event){
+  let checkbox = event.target;
+
+  let id = checkbox.dataset['id'];//get id from data attribute
+
+  let done = checkbox.checked;//returns true if the checkbox is checked
+  let result = await sendRequest(`${server}/todo/${id}`, 'PUT', {done: done});
+
+  let message = done ? 'Done!' : 'Not Done!';
+  toast(message);
+}
+
+async function deleteTodo(id){
+  let result = await sendRequest(`${server}/todo/${id}`, 'DELETE');
+
+  toast('Deleted!');
+
+  loadView();
+}
+
+
+  
   displayTodos(todos);
 }
 
